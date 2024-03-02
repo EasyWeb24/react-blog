@@ -219,12 +219,21 @@ export const CategoriesDisplay = styled.div`
       border-left: 2px solid hsl(210, 100%, 75%);
       display: inline-block;
       text-decoration: none;
-      width: 100%;
-      border-radius: 4px;
-      text-decoration: underline;
+      width: fit-content;
 
-      color: hsl(210, 100%, 25%);
+      border-radius: 4px;
+      a {
+        text-decoration: underline;
+
+        color: hsl(210, 100%, 25%);
+      }
       font-weight: 400;
+
+      .count {
+        color: hsl(0, 0%, 15%);
+        margin-left: 12px;
+        text-decoration: none;
+      }
     }
   }
 `;

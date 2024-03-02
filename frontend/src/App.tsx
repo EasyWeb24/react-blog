@@ -6,6 +6,7 @@ import Navigation from './components/Navigation';
 import Footer from './layouts/footer';
 import Services from './pages/services';
 import AboutUs from './pages/about-us';
+import BlogCategory from './pages/blog/category';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -22,6 +23,7 @@ function App() {
           <Route element={<Services />} path="/services" />
           <Route element={<AboutUs />} path="/about-us" />
           <Route element={<BlogPost />} path="/blog/:slug" />
+          <Route element={<BlogCategory />} path="/blog/category/:slug" />
         </Routes>
         <Footer />
       </BrowserRouter>{' '}

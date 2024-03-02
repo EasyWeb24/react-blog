@@ -13,6 +13,41 @@ import { PortableText } from '@portabletext/react';
 import Moment from 'react-moment';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { SanityDocument } from '@sanity/client';
+
+interface Category {
+  category: string;
+  count: number;
+}
+
+const fetchCategories = async (): Promise<Category[]> => {
+  const data: SanityDocument[] = await sanityClient.fetch(`
+    *[_type == 'post'] {
+      categories[]->{
+        title
+      }
+    }
+  `);
+
+  // Process the data to group and count categories
+  const groupedCategories: { [key: string]: Category } = {};
+  data.forEach((post) => {
+    post.categories.forEach(
+      (category: { _id: string; title: string; count: number }) => {
+        const categoryId = category._id;
+        if (!groupedCategories[categoryId]) {
+          groupedCategories[categoryId] = {
+            category: category.title,
+            count: 0,
+          };
+        }
+        groupedCategories[categoryId].count += 1;
+      }
+    );
+  });
+
+  return Object.values(groupedCategories);
+};
 
 const Index: React.FC = () => {
   const { slug } = useParams();
@@ -35,21 +70,10 @@ const Index: React.FC = () => {
     isPending: categoriesLoading,
     error: categoriesError,
     data: categoriesData,
-  } = useQuery({
+  } = useQuery<Category[]>({
     queryKey: ['categoriesData'],
 
-    queryFn: () =>
-      sanityClient
-        .fetch(
-          ` *[_type == 'post'] {
-            categories[]->{
-              title
-            }
-          }
-          |> group(categories[]._id)
-          |> project(category, count: count())`
-        )
-        .then((res) => res as [{ category: string; count: number }]),
+    queryFn: fetchCategories,
   });
 
   const {
@@ -145,9 +169,11 @@ const Index: React.FC = () => {
             </h3>
             <div className="categories-wrapper">
               {categoriesData.map(({ category, count }) => (
-                <Link to={`/blog/${category}`} className="category-item">
-                  {count}
-                </Link>
+                <div className="category-item">
+                  {' '}
+                  <Link to={`/blog/category/${category}`}>{category}</Link>
+                  <span className="count">({count})</span>
+                </div>
               ))}
             </div>
           </CategoriesDisplay>
