@@ -79,17 +79,6 @@ export const LowerSectionTextHeading = styled.div`
   font-weight: 600;
   margin-bottom: 16px;
   margin-top: 32px;
-
-  &::after {
-    position: absolute;
-    content: '';
-    bottom: 0;
-    width: 100%;
-    height: 3px;
-    background-color: hsl(210, 100%, 65%);
-    left: 0;
-    border-radius: 10px;
-  }
 `;
 
 export const SectionTextHeading = styled.span`
