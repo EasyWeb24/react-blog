@@ -51,7 +51,7 @@ const Index: React.FC = () => {
                 <a href="tel:+23408128795195">08128795195</a>
               </div>
             </div>
-            <div className="col-lg-3 col-md-12">
+            <div className="col-lg-3 col-md-12 w-256">
               <div>
                 <FooterHeadingText>
                   <span>Services</span>

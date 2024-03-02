@@ -21,6 +21,10 @@ export const Container = styled.section`
     height: 48px;
   }
 
+  .w-256 {
+    width: 256px;
+  }
+
   @media (max-width: 760px) {
     & {
       padding: 64px 32px;
@@ -93,7 +97,7 @@ export const FooterInfoWrapper = styled.div`
     }
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 991.98px) {
     div.row {
       gap: 48px;
     }
@@ -124,6 +128,7 @@ export const FooterHeadingText = styled.div`
 
 export const FooterServiceList = styled.ul`
   padding: 0;
+
   display: block;
 
   li {

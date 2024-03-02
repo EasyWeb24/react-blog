@@ -112,12 +112,11 @@ export const LeftSideNav = styled.div`
   top: 256px;
   left: 0;
   width: fit-content;
-  .wrapper {
-    @media (max-width: 760px) {
-      & {
-        position: static;
-        transform: none;
-      }
+
+  @media (max-width: 760px) {
+    & {
+      position: static;
+      transform: none;
     }
   }
 

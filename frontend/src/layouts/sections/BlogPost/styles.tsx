@@ -176,6 +176,52 @@ export const RecentPostsDisplay = styled.div`
       text-decoration: none;
       width: 100%;
       border-radius: 4px;
+      text-decoration: underline;
+
+      color: hsl(210, 100%, 25%);
+      font-weight: 400;
+    }
+  }
+`;
+
+export const CategoriesDisplay = styled.div`
+  @media (max-width: 760px) {
+    & {
+      display: none;
+    }
+  }
+
+  margin-top: 64px;
+  & .heading {
+    color: hsl(0, 0%, 15%);
+    font-size: 16px;
+    text-transform: capitalize;
+    position: relative;
+    border-top: 2px solid hsl(210, 100%, 65%);
+    background-color: hsl(0, 0%, 100%);
+    padding: 16px;
+    font-weight: 400;
+    width: fit-content;
+    font-size: 14px;
+
+    border-radius: 4px;
+  }
+
+  & .categories-wrapper {
+    background-color: hsl(0, 0%, 95%);
+    margin-top: 16px;
+    & .category-item {
+      padding: 12px;
+      background-color: hsl(0, 0%, 100%);
+      color: hsl(0, 0%, 15%);
+      margin-bottom: 4px;
+      font-size: 14px;
+      border-left: 2px solid hsl(210, 100%, 75%);
+      display: inline-block;
+      text-decoration: none;
+      width: 100%;
+      border-radius: 4px;
+      text-decoration: underline;
 
       color: hsl(210, 100%, 25%);
       font-weight: 400;

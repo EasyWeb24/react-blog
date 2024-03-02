@@ -1,5 +1,6 @@
 import {
   BlogPost,
+  CategoriesDisplay,
   Container,
   MetaDataWrapper,
   RecentPostsDisplay,
@@ -31,6 +32,27 @@ const Index: React.FC = () => {
   });
 
   const {
+    isPending: categoriesLoading,
+    error: categoriesError,
+    data: categoriesData,
+  } = useQuery({
+    queryKey: ['categoriesData'],
+
+    queryFn: () =>
+      sanityClient
+        .fetch(
+          ` *[_type == 'post'] {
+            categories[]->{
+              title
+            }
+          }
+          |> group(categories[]._id)
+          |> project(category, count: count())`
+        )
+        .then((res) => res as [{ category: string; count: number }]),
+  });
+
+  const {
     isPending: recentPostsLoading,
     error: recentPostsError,
     data: recentPostsData,
@@ -41,12 +63,14 @@ const Index: React.FC = () => {
     queryFn: () =>
       sanityClient
         .fetch(
-          `*[_type == "post" && slug.current == '${slug}']{ title, publishedAt, slug} | order(publishedAt desc)`
+          `*[_type == "post" && slug.current == '${slug}'][0...2]{ title, publishedAt, slug} | order(publishedAt desc)`
         )
         .then((res) => res as BlogPostType[]),
   });
 
-  if (blogPostLoading || recentPostsLoading)
+  console.log(categoriesError);
+
+  if (blogPostLoading || recentPostsLoading || categoriesLoading)
     return (
       <Container>
         <div className="blog-post-wrapper">
@@ -71,7 +95,7 @@ const Index: React.FC = () => {
       </Container>
     );
 
-  if (blogPostError || recentPostsError)
+  if (blogPostError || recentPostsError || categoriesError)
     return <div>An error occurred while fetching the blog posts</div>;
 
   return (
@@ -102,18 +126,32 @@ const Index: React.FC = () => {
             <PortableText value={blogPostData[0].body} />
           </div>
         </BlogPost>
-        <RecentPostsDisplay>
-          <h3 className="heading">
-            <span>Recent Posts</span>
-          </h3>
-          <div className="post-items-wrapper">
-            {recentPostsData.map(({ title, slug }) => (
-              <Link to={`/blog/${slug}`} className="post-item">
-                {title}
-              </Link>
-            ))}
-          </div>
-        </RecentPostsDisplay>
+        <div>
+          <RecentPostsDisplay>
+            <h3 className="heading">
+              <span>Recent Posts</span>
+            </h3>
+            <div className="post-items-wrapper">
+              {recentPostsData.map(({ title, slug }) => (
+                <Link to={`/blog/${slug.current}`} className="post-item">
+                  {title}
+                </Link>
+              ))}
+            </div>
+          </RecentPostsDisplay>
+          <CategoriesDisplay>
+            <h3 className="heading">
+              <span>Categories</span>
+            </h3>
+            <div className="categories-wrapper">
+              {categoriesData.map(({ category, count }) => (
+                <Link to={`/blog/${category}`} className="category-item">
+                  {count}
+                </Link>
+              ))}
+            </div>
+          </CategoriesDisplay>
+        </div>
       </div>
     </Container>
   );
